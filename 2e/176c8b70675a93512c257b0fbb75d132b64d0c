@@ -1,0 +1,35 @@
+.github/workflows/test.yml
+  s_794cb7fefd0066::t_5fb23330575743 1-27
+.gitignore
+  s_794cb7fefd0066::t_91201b7d2ee823 1-7
+LICENSE.txt
+  s_794cb7fefd0066::t_1d3b5ef83d2fe8 1-662
+MANIFEST.in
+  s_794cb7fefd0066::t_16ae0124ee49ed 1-2
+Makefile
+  s_794cb7fefd0066::t_899065b14a852b 1-30
+README.rst
+  s_794cb7fefd0066::t_907205930d4fe1 1-25
+pyproject.toml
+  s_794cb7fefd0066::t_ebebb26caaa463 1-65
+tutorprogress/__about__.py
+  s_794cb7fefd0066::t_d99d1d3b18ecf5 1
+tutorprogress/plugin.py
+  s_794cb7fefd0066::t_107cc2b1471880 1-227
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "2e176c8b70675a93512c257b0fbb75d132b64d0c",
+  "prompts": {},
+  "sessions": {
+    "s_794cb7fefd0066": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019efa51-0cae-7881-8fba-b0d00a6a566d",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
