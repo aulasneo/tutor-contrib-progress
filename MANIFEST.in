@@ -1,0 +1,2 @@
+recursive-include tutorprogress/patches *
+recursive-include tutorprogress/templates *
