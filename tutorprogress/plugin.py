@@ -1,9 +1,13 @@
 import os
+import shlex
 from glob import glob
+from random import randint
+from typing import Optional
 
 import click
 import importlib_resources
 from tutor import hooks
+from tutor.hooks import priorities
 
 from .__about__ import __version__
 
@@ -28,6 +32,7 @@ hooks.Filters.CONFIG_UNIQUE.add_items(
         # Prefix your setting names with 'PROGRESS_'.
         # For example:
         ### ("PROGRESS_SECRET_KEY", "{{ 24|random_string }}"),
+        ("PROGRESS_COMPLETION_SUMMARIES_SCHEDULE", f"{str(randint(0, 59))} * * * *"),
     ]
 )
 
@@ -54,6 +59,7 @@ MY_INIT_TASKS: list[tuple[str, tuple[str, ...]]] = [
     # tutorprogress/templates/progress/tasks/lms/init.sh
     # And then add the line:
     ### ("lms", ("progress", "tasks", "lms", "init.sh")),
+    ("lms", ("progress", "tasks", "lms", "init.sh")),
 ]
 
 
@@ -67,7 +73,11 @@ for service, template_path in MY_INIT_TASKS:
     )
     with open(full_path, encoding="utf-8") as init_task_file:
         init_task: str = init_task_file.read()
-    hooks.Filters.CLI_DO_INIT_TASKS.add_item((service, init_task))
+    with hooks.Contexts.app(service).enter():
+        hooks.Filters.CLI_DO_INIT_TASKS.add_item(
+            (service, init_task),
+            priority=priorities.LOW,
+        )
 
 
 ########################################
@@ -190,6 +200,80 @@ for path in glob(str(importlib_resources.files("tutorprogress") / "patches" / "*
 
 # Now, you can run your job like this:
 #   $ tutor local do say-hi --name="Andrés González"
+
+
+@click.command()
+@click.option(
+    "--course-id",
+    help="Opaque course id, for example course-v1:Org+Num+Run.",
+)
+@click.option(
+    "--user-id",
+    "user_ids",
+    multiple=True,
+    type=int,
+    help="Optional learner user id. Can be supplied multiple times.",
+)
+@click.option(
+    "--batch-size",
+    type=int,
+    default=500,
+    show_default=True,
+    help="Number of learners to process per batch.",
+)
+@click.option(
+    "--sleep",
+    "sleep_seconds",
+    type=float,
+    default=0.0,
+    show_default=True,
+    help="Seconds to sleep between batches.",
+)
+@click.option(
+    "--dry-run",
+    is_flag=True,
+    help="Compute work without writing summary rows.",
+)
+@click.option(
+    "--force",
+    is_flag=True,
+    help="Recompute rows that already exist.",
+)
+def backfill_course_completion_summaries(
+    course_id: Optional[str],
+    user_ids: tuple[int, ...],
+    batch_size: int,
+    sleep_seconds: float,
+    dry_run: bool,
+    force: bool,
+) -> list[tuple[str, str]]:
+    """
+    Backfill learner course completion summaries.
+    """
+    command = [
+        "./manage.py",
+        "lms",
+        "backfill_course_completion_summaries",
+        "--batch-size",
+        str(batch_size),
+        "--sleep",
+        str(sleep_seconds),
+    ]
+    if course_id:
+        command.extend(["--course-id", course_id])
+    for user_id in user_ids:
+        command.extend(["--user-id", str(user_id)])
+    if dry_run:
+        command.append("--dry-run")
+    if force:
+        command.append("--force")
+
+    return [
+        ("lms", shlex.join(command)),
+    ]
+
+
+hooks.Filters.CLI_DO_COMMANDS.add_item(backfill_course_completion_summaries)
 
 
 #######################################

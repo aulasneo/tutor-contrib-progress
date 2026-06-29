@@ -1,27 +1,50 @@
 .DEFAULT_GOAL := help
 .PHONY: docs
+
+PYTHON ?= python3
+TUTOR ?= $(if $(VIRTUAL_ENV),$(VIRTUAL_ENV)/bin/tutor,tutor)
+TUTOR_CMD = $(TUTOR) -r $(CURDIR)
 SRC_DIRS = ./tutorprogress
+BLACK_OPTS = --exclude templates ${SRC_DIRS}
+
+clean: ## Remove build artifacts
+	rm -rf build dist *.egg-info
+
+requirements: ## Install package and development dependencies
+	$(PYTHON) -m pip install -e '.[dev]'
+
+build: clean ## Build the package
+	$(PYTHON) -m build
+
+dist: ## Upload package to PyPI
+	twine upload dist/*
 
 # Warning: These checks are not necessarily run on every PR.
-test: test-lint test-types test-format  # Run some static checks.
+test: test-lint test-types test-format test-dist test-tutor ## Run some static checks.
 
 test-format: ## Run code formatting tests
-	ruff format --check --diff ${SRC_DIRS}
+	black --check --diff $(BLACK_OPTS)
 
 test-lint: ## Run code linting tests
-	ruff check ${SRC_DIRS}
+	pylint --errors-only --enable=unused-import,unused-argument --ignore=templates --ignore=docs/_ext ${SRC_DIRS}
 
 test-types: ## Run type checks.
 	mypy --exclude=templates --ignore-missing-imports --implicit-reexport --strict ${SRC_DIRS}
 
-format: ## Format code
-	ruff format ${SRC_DIRS}
+test-dist: build ## Check the distribution files
+	twine check dist/*
 
-fix-lint: ## Fix lint errors automatically
-	ruff check --fix ${SRC_DIRS}
+test-tutor:
+	rm -rf config.yml env/
+	$(TUTOR_CMD) plugins list
+	$(TUTOR_CMD) config save
+	$(TUTOR_CMD) plugins enable progress
 
-version: ## Print the current tutor-cairn version
-	@python -c 'import io, os; about = {}; exec(io.open(os.path.join("tutorprogress", "__about__.py"), "rt", encoding="utf-8").read(), about); print(about["__version__"])'
+format: ## Format code automatically
+	black $(BLACK_OPTS)
+
+isort: ##  Sort imports. This target is not mandatory because the output may be incompatible with black formatting. Provided for convenience purposes.
+	isort --skip=templates ${SRC_DIRS}
 
 ESCAPE = 
 help: ## Print this help

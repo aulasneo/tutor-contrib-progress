@@ -10,7 +10,7 @@ authors = [
 ]
 license = { text = "AGPL-3.0-only" }
 
-readme = {file = "README.rst", content-type = "text/x-rst"}
+readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">= 3.9"
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -36,7 +36,13 @@ dynamic = ["version"]
 [project.optional-dependencies]
 dev = [
     "tutor[dev]>=21.0.0,<22.0.0",
-    "ruff",
+    "black",
+    "pylint",
+    "twine>=6.2.0",
+    "build",
+    "mypy",
+    "isort",
+    "pkginfo>=1.12.0",
 ]
 
 [tool.hatch.version]

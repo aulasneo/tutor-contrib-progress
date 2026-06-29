@@ -1,0 +1,48 @@
+# By tutor-contrib-progress
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: progress-completion-summaries
+  labels:
+    app.kubernetes.io/name: progress-completion-summaries
+spec:
+  schedule: "{{ PROGRESS_COMPLETION_SUMMARIES_SCHEDULE }}"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: progress-completion-summaries
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: progress-completion-summaries
+              image: {{ DOCKER_IMAGE_OPENEDX }}
+              env:
+                - name: SERVICE_VARIANT
+                  value: lms
+                - name: DJANGO_SETTINGS_MODULE
+                  value: lms.envs.tutor.production
+              volumeMounts:
+                - mountPath: /openedx/edx-platform/lms/envs/tutor/
+                  name: settings-lms
+                - mountPath: /openedx/edx-platform/cms/envs/tutor/
+                  name: settings-cms
+                - mountPath: /openedx/config
+                  name: config
+              command:
+                - /bin/sh
+                - -c
+                - ./manage.py lms process_dirty_course_completion_summaries
+          volumes:
+            - name: settings-lms
+              configMap:
+                name: openedx-settings-lms
+            - name: settings-cms
+              configMap:
+                name: openedx-settings-cms
+            - name: config
+              configMap:
+                name: openedx-config
+# End of tutor-contrib-progress
