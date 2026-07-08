@@ -1,2 +1,2 @@
 RUN --mount=type=cache,target=/openedx/.cache/pip,sharing=shared \
-    $PIP_COMMAND install "git+https://github.com/aulasneo/openedx-progress.git@88313c80c3c596c5e8099fbb7846f7fe6dc6c682#egg=openedx-progress"
+    $PIP_COMMAND install "git+https://github.com/aulasneo/openedx-progress.git@13c17ed65b52d218fc08c1ccfca0bdb24b0015cd#egg=openedx-progress"
