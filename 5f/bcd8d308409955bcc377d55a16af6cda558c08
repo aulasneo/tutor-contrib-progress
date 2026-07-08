@@ -1,0 +1,14 @@
+tutorprogress/patches/openedx-dockerfile-post-python-requirements
+  h_67430f944e00e2 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5fbcd8d308409955bcc377d55a16af6cda558c08",
+  "prompts": {},
+  "humans": {
+    "h_67430f944e00e2": {
+      "author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
