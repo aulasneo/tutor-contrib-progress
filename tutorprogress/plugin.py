@@ -15,7 +15,7 @@ from .__about__ import __version__
 # CONFIGURATION
 ########################################
 
-BACKEND_VERSION = "v22.0.0"
+BACKEND_VERSION = "22.0.0"
 hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
         # Add your new settings that have default values here.
