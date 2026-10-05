@@ -1,0 +1,14 @@
+.github/workflows/publish.yml
+  h_67430f944e00e2 12,72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f137bd53289998867a50651daffaf77774b33141",
+  "prompts": {},
+  "humans": {
+    "h_67430f944e00e2": {
+      "author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
