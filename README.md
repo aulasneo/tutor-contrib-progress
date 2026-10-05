@@ -7,7 +7,7 @@ This plugin installs [aulasneo/openedx-progress](https://github.com/aulasneo/ope
 ## Installation
 
 ```bash
-pip install git+https://github.com/aulasneo/tutor-contrib-progress
+pip install tutor-contrib-progress
 ```
 
 ## Usage
