@@ -1,0 +1,18 @@
+pyproject.toml
+  h_67430f944e00e2 14,24-25,31,39,42
+tutorprogress/patches/openedx-dockerfile-post-python-requirements
+  h_67430f944e00e2 2
+tutorprogress/plugin.py
+  h_67430f944e00e2 18,25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8118497f555748cc6ff28d1a3da55409613ec48c",
+  "prompts": {},
+  "humans": {
+    "h_67430f944e00e2": {
+      "author": "Andrés González <andres@aulasneo.com>"
+    }
+  }
+}
