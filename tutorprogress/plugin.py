@@ -15,12 +15,14 @@ from .__about__ import __version__
 # CONFIGURATION
 ########################################
 
+BACKEND_VERSION = "v22.0.0"
 hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
         # Add your new settings that have default values here.
         # Each new setting is a pair: (setting_name, default_value).
         # Prefix your setting names with 'PROGRESS_'.
         ("PROGRESS_VERSION", __version__),
+        ("PROGRESS_BACKEND_VERSION", BACKEND_VERSION),
     ]
 )
 
