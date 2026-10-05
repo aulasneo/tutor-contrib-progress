@@ -1,2 +1,2 @@
 RUN --mount=type=cache,target=/openedx/.cache/pip,sharing=shared \
-    $PIP_COMMAND install "openedx-progress==${PROGRESS_BACKEND_VERSION}"
+    $PIP_COMMAND install "openedx-progress=={{ PROGRESS_BACKEND_VERSION }}"
